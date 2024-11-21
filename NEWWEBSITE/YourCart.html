@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Your Cart</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        header h1 {
+            margin: 0;
+        }
+        .cart-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .cart-item h2 {
+            margin: 0;
+            font-size: 1em;
+            color: #333;
+        }
+        .cart-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .cart-item button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart-item button:hover {
+            background-color: #c82333;
+        }
+        .total-price {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style></head><body>
+
+
+    
+    
+    
+    
+
+    <header>
+        </header>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><a href="index.html"><big><big><big><big><span style="font-weight: bold;">BACK</span></big></big></big></big></a><br>
+      </td>
+      <td style="vertical-align: top;">SIGNUP<br>
+      </td>
+      <td style="vertical-align: top;"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h1><br>
+</h1>
+<h1>Your Cart</h1>
+
+    
+    <div class="cart-container">
+        <div id="cart-items">
+            <!-- Cart items will be dynamically injected here -->
+        </div>
+        <div class="total-price">
+            Total: $<span id="total-price">0.00</span>
+        </div>
+    </div>
+    <script>
+        // Retrieve cart data from localStorage
+        const cartData = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+        let totalPrice = 0;
+
+        // Function to render cart items
+        function renderCart() {
+            cartItemsContainer.innerHTML = ''; // Clear existing items
+            totalPrice = 0; // Reset total price
+
+            cartData.forEach((item, index) => {
+                // Create cart item element
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+
+                // Item image
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.name;
+
+                // Item details
+                const details = document.createElement('div');
+                details.classList.add('cart-item-details');
+                details.innerHTML = `<h2>${item.name}</h2><p>$${item.price.toFixed(2)}</p>`;
+
+                // Remove button
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.addEventListener('click', () => {
+                    removeFromCart(index);
+                });
+
+                // Append to cart item
+                cartItem.appendChild(img);
+                cartItem.appendChild(details);
+                cartItem.appendChild(removeButton);
+
+                // Add to container
+                cartItemsContainer.appendChild(cartItem);
+
+                // Update total price
+                totalPrice += item.price;
+            });
+
+            // Update total price in DOM
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+
+        // Function to remove item from cart
+        function removeFromCart(index) {
+            cartData.splice(index, 1); // Remove item from array
+            localStorage.setItem('cart', JSON.stringify(cartData)); // Update localStorage
+            renderCart(); // Re-render cart
+        }
+
+        // Render cart on page load
+        renderCart();
+    </script>
+
+  
+
+</body></html>
